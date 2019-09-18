@@ -2,8 +2,10 @@
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Owin;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.OAuth;
 using Owin;
-
+using ApiProject.TokenProvider;
 [assembly: OwinStartup(typeof(ApiProject.Startup))]
 
 namespace ApiProject
@@ -15,6 +17,28 @@ namespace ApiProject
             HttpConfiguration config = new HttpConfiguration();
             WebApiConfig.Register(config);
             SwaggerConfig.Register(config);
+
+
+            OAuthBearerAuthenticationOptions options = new OAuthBearerAuthenticationOptions
+            {
+                Description = new AuthenticationDescription
+                {
+                    AuthenticationType = "password",
+                    Caption = "Bearer Token"
+                },
+                AuthenticationMode = AuthenticationMode.Active
+            };
+            OAuthAuthorizationServerOptions serverOptions = new OAuthAuthorizationServerOptions
+            {
+                TokenEndpointPath = new PathString("/token"),
+                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(20),
+                AllowInsecureHttp = true,
+                Provider = new TokenProvider.TokenProvider(),
+            };
+
+            app.UseOAuthAuthorizationServer(serverOptions);
+            app.UseOAuthBearerAuthentication(options);
+
             app.UseWebApi(config);
             // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=316888
         }
