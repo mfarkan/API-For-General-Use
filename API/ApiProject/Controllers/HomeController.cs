@@ -8,7 +8,7 @@ using System.Web.Http;
 namespace ApiProject.Controllers
 {
     [Authorize]
-    public class HomeController : ApiController
+    public class HomeController : BaseApiController
     {
         // GET api/<controller>
         public IEnumerable<string> Get()

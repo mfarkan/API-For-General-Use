@@ -2,6 +2,7 @@ using System.Web.Http;
 using WebActivatorEx;
 using ApiProject;
 using Swashbuckle.Application;
+using ApiProject.App_Start;
 
 namespace ApiProject
 {
@@ -10,7 +11,7 @@ namespace ApiProject
         public static void Register(HttpConfiguration config)
         {
             config
-                .EnableSwagger(c =>
+                .EnableSwagger("docs/{apiVersion}/swagger",c =>
                     {
                         // By default, the service root url is inferred from the request used to access the docs.
                         // However, there may be situations (e.g. proxy and load-balanced environments) where this does not
@@ -57,11 +58,11 @@ namespace ApiProject
                         // you'll need to implement a custom IDocumentFilter and/or IOperationFilter to set these properties
                         // according to your specific authorization implementation
                         //
-                        
+
                         //c.BasicAuth("basic")
                         //    .Description("Basic HTTP Authentication");
                         //
-						// NOTE: You must also configure 'EnableApiKeySupport' below in the SwaggerUI section
+                        // NOTE: You must also configure 'EnableApiKeySupport' below in the SwaggerUI section
                         //c.ApiKey("apiKey")
                         //    .Description("API Key Authentication")
                         //    .Name("apiKey")
@@ -164,7 +165,8 @@ namespace ApiProject
                         // before using this option.
                         //
                         //c.DocumentFilter<ApplyDocumentVendorExtensions>();
-
+                        c.DocumentFilter<SwaggerAuthTokenOperation>();
+                        c.OperationFilter<SwaggerAuthTokenHeaderParameter>();
                         // In contrast to WebApi, Swagger 2.0 does not include the query string component when mapping a URL
                         // to an action. As a result, Swashbuckle will raise an exception if it encounters multiple actions
                         // with the same path (sans query string) and HTTP method. You can workaround this by providing a
