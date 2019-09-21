@@ -5,10 +5,22 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
+using Swashbuckle.Application;
 using ApiProject.TokenProvider;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
 using ApiProject.Infrastructure;
+using System.Web.Http.Routing;
+using Microsoft.Web.Http.Routing;
+using global::Owin;
+using Microsoft.Web.Http.Routing;
+using Swashbuckle.Application;
+using System;
+using System.IO;
+using System.Reflection;
+using System.Web.Http;
+using System.Web.Http.Description;
+using System.Web.Http.Routing;
 
 [assembly: OwinStartup(typeof(ApiProject.Startup))]
 
@@ -21,12 +33,18 @@ namespace ApiProject
             HttpConfiguration config = new HttpConfiguration();
 
             IWindsorContainer container = new WindsorContainer();
+
             container.Install(FromAssembly.This());
 
+            var constraintResolver = new DefaultInlineConstraintResolver() { ConstraintMap = { ["apiVersion"] = typeof(ApiVersionRouteConstraint) } };
+
+
+
+            config.AddApiVersioning(q => { q.ReportApiVersions = true; });
+            config.MapHttpAttributeRoutes(constraintResolver);
+
             WebApiConfig.Register(config, container);
-
             SwaggerConfig.Register(config);
-
 
 
 
