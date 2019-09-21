@@ -10,7 +10,7 @@ namespace Generic.API.Core.Enumarations
     {
         Deleted = -1,
 
-        NotAvailabel = 0,
+        NotAvailable = 0,
 
         Active = 1,
     }
