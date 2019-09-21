@@ -6,6 +6,10 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using ApiProject.TokenProvider;
+using Castle.Windsor;
+using Castle.Windsor.Installer;
+using ApiProject.Infrastructure;
+
 [assembly: OwinStartup(typeof(ApiProject.Startup))]
 
 namespace ApiProject
@@ -15,8 +19,15 @@ namespace ApiProject
         public void Configuration(IAppBuilder app)
         {
             HttpConfiguration config = new HttpConfiguration();
-            WebApiConfig.Register(config);
+
+            IWindsorContainer container = new WindsorContainer();
+            container.Install(FromAssembly.This());
+
+            WebApiConfig.Register(config, container);
+
             SwaggerConfig.Register(config);
+
+
 
 
             OAuthBearerAuthenticationOptions options = new OAuthBearerAuthenticationOptions

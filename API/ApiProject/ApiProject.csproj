@@ -135,6 +135,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Infrastructure\ControllerRoot.cs" />
+    <Compile Include="Installers\ApiInstaller.cs" />
+    <Compile Include="Installers\LoggerInstaller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="TokenProvider\TokenProvider.cs" />
@@ -151,6 +154,12 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CORE\Generic.API.Core\Generic.API.Core.csproj">
+      <Project>{f9467073-5b65-4f27-a5c3-f1267351c71f}</Project>
+      <Name>Generic.API.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

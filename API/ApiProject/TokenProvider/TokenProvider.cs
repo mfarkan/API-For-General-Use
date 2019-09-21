@@ -26,7 +26,7 @@ namespace ApiProject.TokenProvider
         {
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
 
-            if (context.UserName == "BurganWallet" && context.Password == "123456")
+            if (context.UserName == "Your_User" && context.Password == "123456")
             {
                 var identity = new ClaimsIdentity(context.Options.AuthenticationType);
 
