@@ -20,9 +20,6 @@ namespace ApiProject
             config.Formatters.XmlFormatter.MediaTypeMappings.Add(
                 new QueryStringMapping("type", "xml", new MediaTypeHeaderValue("application/xml")));
 
-
-            config.MapHttpAttributeRoutes();
-
             config.Services.Replace(typeof(IHttpControllerActivator), new ControllerRoot(container));
 
             config.EnableCors();

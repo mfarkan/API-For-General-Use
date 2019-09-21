@@ -1,4 +1,5 @@
 ﻿using Generic.API.Core.Logger;
+using Microsoft.Web.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,9 +7,10 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace ApiProject.Controllers
+namespace ApiProject.Controllers.V2
 {
     [Authorize]
+    [ApiVersion("2.0")]
     public class HomeController : BaseApiController
     {
         private ILogger _logger;
@@ -16,11 +18,10 @@ namespace ApiProject.Controllers
         {
             this._logger = logger;
         }
-        // GET api/<controller>
         public IEnumerable<string> Get()
         {
 
-            return new string[] { "value1", "value2" };
+            return new string[] { "value2.0", "value3.0" };
         }
 
         // GET api/<controller>/5

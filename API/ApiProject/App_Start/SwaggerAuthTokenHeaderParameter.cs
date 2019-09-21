@@ -11,11 +11,29 @@ namespace ApiProject.App_Start
     {
         public void Apply(Operation operation, SchemaRegistry schemaRegistry, ApiDescription apiDescription)
         {
+            operation.deprecated |= apiDescription.IsDeprecated();
+
             if (operation.parameters == null)
-                operation.parameters = new List<Parameter>();
+            {
+                return;
+            }
 
             if (operation.parameters != null)
             {
+
+                foreach (var parameter in operation.parameters)
+                {
+                    var description = apiDescription.ParameterDescriptions.First(p => p.Name == parameter.name);
+                    if (parameter.description == null)
+                    {
+                        parameter.description = description.Documentation;
+                    }
+                    if (parameter.@default == null)
+                    {
+                        parameter.@default = description.ParameterDescriptor?.DefaultValue;
+                    }
+                }
+
                 operation.parameters.Add(new Parameter
                 {
                     name = "Authorization",
