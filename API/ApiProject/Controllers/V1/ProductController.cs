@@ -22,5 +22,11 @@ namespace ApiProject.Controllers.V1
         {
             return "Product 1";
         }
+        [AllowAnonymous]
+        public IEnumerable<string> Get()
+        {
+
+            return new string[] { "value1", "value2" };
+        }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Http;
 using System.Web.Http.Description;
 
 namespace ApiProject.App_Start
@@ -33,16 +34,20 @@ namespace ApiProject.App_Start
                         parameter.@default = description.ParameterDescriptor?.DefaultValue;
                     }
                 }
-
-                operation.parameters.Add(new Parameter
+                //if API method is allowAnonymous , we will not show AuthToken for this action.
+                var allowAnonymous = apiDescription.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any();
+                if (!allowAnonymous)
                 {
-                    name = "Authorization",
-                    @in = "header",
-                    @default = "Bearer ",
-                    description = "Access token for the API",
-                    required = false,
-                    type = "string"
-                });
+                    operation.parameters.Add(new Parameter
+                    {
+                        name = "Authorization",
+                        @in = "header",
+                        @default = "Bearer ",
+                        description = "Access token for the API",
+                        required = false,
+                        type = "string"
+                    });
+                }
             }
         }
     }
